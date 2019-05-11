@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+  {% if result %}
+    Success!
+  {% else %}
+    Failed to register
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {% if result %}
+    You have been successfully registered
+  {% else %}
+    Your registeration failed. Please try again.
+  {% endif %}
+{% endblock %}
