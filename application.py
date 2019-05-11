@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -26,6 +26,8 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
+    if session.get("username") is None:
+        session["logged_in"] = False
     return "Project 1: TODO"
 
 @app.route("/register", methods=["GET", "POST"])
@@ -38,17 +40,40 @@ def register():
         db.commit()
         return render_template("register_result.html", result=True)
     else:
-        return render_template("register.html")
+        # if logged in, redirect to index
+        if session.get("logged_in") == True:
+            return redirect(url_for("index"))
+        else:
+            return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("username") is None:
+        session["logged_in"] = False
+
     if request.method=="POST":
+        #if already logged in, take the user to logout page
+        if session["logged_in"] == True:
+            return redirect(url_for("logout"))
+
         #verify
         user_name = request.form.get("username")
-        passsword = request.form.get("password")
+        password = request.form.get("password")
         #do stuff
+        user = db.execute("SELECT * FROM users WHERE username=:user AND pass=:passw", {"user":user_name, "passw" : password}).fetchone()
+        if user is None:
+            return render_template("register_result.html", result=False)
+        else:
+            session["logged_in"] = True
+            session["username"] = user_name
+            return render_template("register_result.html", result=True)
     else:
         return render_template("login.html")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session["logged_in"] = False
+    return "Logged out! :)"
 
 if __name__ == "__main__":
     app.run(debug=True)
