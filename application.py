@@ -66,6 +66,7 @@ def login():
         else:
             session["logged_in"] = True
             session["username"] = user_name
+            session["user_id"] = user["id"]
             return render_template("register_result.html", result=True)
     else:
         return render_template("login.html")
@@ -74,6 +75,11 @@ def login():
 def logout():
     session["logged_in"] = False
     return "Logged out! :)"
+
+@app.route("/test")
+def test():
+    booksa = db.execute("SELECT * FROM books").fetchone()
+    return booksa["title"]
 
 if __name__ == "__main__":
     app.run(debug=True)
