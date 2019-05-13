@@ -5,7 +5,7 @@
 {% block body %}
   <ul>
   {% for result in results %}
-    <li>{{result["isbn"]}} {{result["title"]}} {{result["author"]}}</li>
+    <li><a href="{{url_for('books', isbn=result['isbn'])}}">{{result["isbn"]}} : {{result["title"]}} - {{result["author"]}}</a></li>
   {% endfor %}
   </ul>
 {% endblock %}

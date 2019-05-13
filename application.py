@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -22,7 +22,6 @@ Session(app)
 #engine = create_engine(os.getenv("DATABASE_URL"))
 engine = create_engine("postgres://postgres:password@localhost:5432/postgres")
 db = scoped_session(sessionmaker(bind=engine))
-
 
 @app.route("/")
 def index():
@@ -92,6 +91,14 @@ def search():
     results = db.execute("SELECT * FROM books WHERE isbn LIKE :isbn AND title LIKE :title AND author LIKE :author LIMIT 10", {"isbn":isbn, "title":title, "author":author}).fetchall()
     return render_template("search.html", results=results)
 
+@app.route("/books/<string:isbn>")
+def books(isbn):
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn":isbn}).fetchone()
+
+    if book is None:
+        return render_template("book.html", found=False)
+
+    return render_template("book.html", found=True ,book=book)
 
 if __name__ == "__main__":
     app.run(debug=True)
