@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block heading %}Home{% endblock %}
+
+{% block body %}
+  <form action="{{url_for('search')}}" method="get">
+    <input type="text" name="isbn_query" placeholder="Search ISBN number">
+    <input type="text" name="title_query" placeholder="Search title">
+    <input type="text" name="author_query" placeholder="Search author">
+    <button>Search</button>
+  </form>
+{% endblock %}

@@ -28,7 +28,7 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     if session.get("username") is None:
         session["logged_in"] = False
-    return "Project 1: TODO"
+    return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -80,6 +80,18 @@ def logout():
 def test():
     booksa = db.execute("SELECT * FROM books").fetchone()
     return booksa["title"]
+
+@app.route("/search", methods=["GET"])
+def search():
+    isbn = request.args.get("isbn_query")
+    isbn = "%{}%".format(isbn)
+    title = request.args.get("title_query")
+    title = "%{}%".format(title.title())
+    author = request.args.get("author_query")
+    author = "%{}%".format(author.title())
+    results = db.execute("SELECT * FROM books WHERE isbn LIKE :isbn AND title LIKE :title AND author LIKE :author LIMIT 10", {"isbn":isbn, "title":title, "author":author}).fetchall()
+    return render_template("search.html", results=results)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
