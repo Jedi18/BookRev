@@ -15,8 +15,13 @@
   Title :- {{book["title"]}}<br>
   Author :- {{book["author"]}}<br>
   Year :- {{book["year"]}}<br>
+  <hr>
+  <br>Goodreads Reviews<br><br>
+  Average rating :- {{goodreads_data['avg_ratings']}}<br>
+  Number of reviews :- {{goodreads_data['ratings_count']}}<br>
+  <br><hr>
 
-  <br>Reviews:-<br><br>
+  <br>User Reviews:-<br><br>
 
   {% if reviews|length < 1 %}
     No reviews for this book.
@@ -26,10 +31,11 @@
 
   {{review["review"]}}
   <br>
-  Posted on :- {{review["posted_on"]}}
+  Posted on :- {{review["posted_on"]}}  Posted By - {{review["user_name"]}}
   <br><br>
 
   {% endfor %}
+  <a href="{{url_for('reviews',bookid=book['id'])}}">Add review</a>
   {% else %}
   Wrong ISBN number or book is not present in the database.
   {% endif %}

@@ -4,6 +4,7 @@ from flask import Flask, session, render_template, request, redirect, url_for, j
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import requests
 
 GOODREADS_API_KEY = "v3bCS9Nn5lNxbavMW3uRg"
 
@@ -99,7 +100,14 @@ def books(isbn):
         return render_template("book.html", found=False)
 
     reviews = db.execute("SELECT * FROM reviews WHERE book_id = :bookid LIMIT 10", {"bookid":book["id"]}).fetchall()
-    return render_template("book.html", found=True ,book=book, reviews=reviews)
+
+    #Good reads review data
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key":GOODREADS_API_KEY, "isbns":isbn})
+    goodreads = res.json()
+
+    goodreads_data = {"avg_ratings":goodreads['books'][0]["average_rating"], "ratings_count":goodreads['books'][0]["work_ratings_count"]}
+
+    return render_template("book.html", found=True ,book=book, reviews=reviews, goodreads_data=goodreads_data)
 
 @app.route("/reviews", methods=["GET", "POST"])
 def reviews():
