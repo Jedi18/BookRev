@@ -132,5 +132,26 @@ def reviews():
 
             return render_template("review.html", book_id = book_id, bookidprovided = bookidprovided)
 
+@app.route("/api/<string:isbn>", methods=["GET"])
+def api(isbn):
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn",{"isbn":isbn}).fetchone()
+
+    reviews = db.execute("SELECT rating FROM reviews WHERE book_id = :bookid",{"bookid":book["id"]}).fetchall()
+
+    review_count = len(reviews)
+    ratings = 0
+
+    for review in reviews:
+        ratings += review["rating"]
+
+    ratings = ratings//review_count
+
+    if book is None:
+        abort(404)
+
+    response = jsonify({"title":book["title"], "author":book["author"], "year":book["year"], "isbn":book["isbn"], "review_count":review_count,"average_score":ratings})
+    response.status_code = 200
+    return response
+
 if __name__ == "__main__":
     app.run(debug=True)
