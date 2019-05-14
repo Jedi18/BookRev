@@ -36,7 +36,8 @@
   <br><br>
 
   {% endfor %}
-  <a href="{{url_for('reviews',bookid=book['id'])}}">Add review</a>
+  <br>
+  <a href="{{url_for('reviews',bookid=book['id'])}}" class="btn btn-primary">Add review</a>
   {% else %}
   Wrong ISBN number or book is not present in the database.
   {% endif %}

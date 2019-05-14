@@ -2,15 +2,18 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BooksP</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
     <script type="text/javascript" src="{{url_for('static', filename='js/js1.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
   </head>
   <body>
-    <h1>{% block heading %}{% endblock %}</h1>
+    <div class="container">
+      <h1>{% block heading %}{% endblock %}</h1>
 
-    {% block body %}
-    {% endblock %}
+      {% block body %}
+      {% endblock %}
+    </div>
   </body>
 </html>

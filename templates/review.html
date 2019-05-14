@@ -4,14 +4,22 @@
 
 {% block body %}
   <form action="{{url_for('reviews')}}" method="post">
-    <input type="text" name="review" placeholder="Enter review">
+    <div class="form-group">
+      <input type="text" name="review" placeholder="Enter review" class="form-control">
+    </div>
     {% if bookidprovided %}
-    <input type="text" name="bookid" value="{{book_id}}">
+    <div class="form-group">
+      <input type="text" name="bookid" value="{{book_id}}" class="form-control">
+    </div>
     {% else %}
-    <input type="text" name="bookid" placeholder="Enter book id">
+    <div class="form-group">
+      <input type="text" name="bookid" placeholder="Enter book id" class="form-control">
+    </div>
     {% endif %}
-    <input type="range" min="1" max="5" value="3" name="rating" onchange="updateRatingSlider(this.value);">
-    <input type="text" value="" id="ratingsValue">
-    <button>Submit</button>
+    <div class="form-group">
+      <input type="range" min="1" max="5" value="3" name="rating" onchange="updateRatingSlider(this.value);" class="form-control">
+      <input type="text" value="" id="ratingsValue" class="form-control">
+    </div>
+    <button class="btn btn-primary">Submit</button>
   </form>
 {% endblock %}

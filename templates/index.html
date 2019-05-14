@@ -4,9 +4,15 @@
 
 {% block body %}
   <form action="{{url_for('search')}}" method="get">
-    <input type="text" name="isbn_query" placeholder="Search ISBN number">
-    <input type="text" name="title_query" placeholder="Search title">
-    <input type="text" name="author_query" placeholder="Search author">
-    <button>Search</button>
+    <div class="form-group">
+      <input type="text" name="isbn_query" placeholder="Search ISBN number" class="form-control">
+    </div>
+    <div class="form-group">
+      <input type="text" name="title_query" placeholder="Search title" class="form-control">
+    </div>
+    <div class="form-group">
+      <input type="text" name="author_query" placeholder="Search author" class="form-control">
+    </div>
+    <button class="btn btn-primary">Search</button>
   </form>
 {% endblock %}
