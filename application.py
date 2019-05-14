@@ -109,7 +109,8 @@ def reviews():
 
         review = request.form.get("review")
         bookid = request.form.get("bookid")
-        db.execute("INSERT INTO reviews(review, book_id, user_name) VALUES(:review, :bookid, :username)", {"review":review, "bookid":bookid, "username":session["username"]})
+        rating = request.form.get("rating")
+        db.execute("INSERT INTO reviews(review, book_id, user_name, rating) VALUES(:review, :bookid, :username, :rating)", {"review":review, "bookid":bookid, "username":session["username"], "rating":rating})
         db.commit()
         return redirect(url_for("index"))
     else:

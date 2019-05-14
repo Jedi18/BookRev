@@ -10,6 +10,8 @@
     {% else %}
     <input type="text" name="bookid" placeholder="Enter book id">
     {% endif %}
+    <input type="range" min="1" max="5" value="3" name="rating" onchange="updateRatingSlider(this.value);">
+    <input type="text" value="" id="ratingsValue">
     <button>Submit</button>
   </form>
 {% endblock %}
