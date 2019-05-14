@@ -99,8 +99,29 @@ def books(isbn):
         return render_template("book.html", found=False)
 
     reviews = db.execute("SELECT * FROM reviews WHERE book_id = :bookid LIMIT 10", {"bookid":book["id"]}).fetchall()
-
     return render_template("book.html", found=True ,book=book, reviews=reviews)
+
+@app.route("/reviews", methods=["GET", "POST"])
+def reviews():
+    if request.method == "POST":
+        if not (session["logged_in"] == True):
+            return redirect(url_for("login"))
+
+        review = request.form.get("review")
+        bookid = request.form.get("bookid")
+        db.execute("INSERT INTO reviews(review, book_id, user_name) VALUES(:review, :bookid, :username)", {"review":review, "bookid":bookid, "username":session["username"]})
+        db.commit()
+        return redirect(url_for("index"))
+    else:
+        if not (session["logged_in"] == True):
+            return redirect(url_for("login"))
+        else:
+            book_id = request.args.get("bookid")
+            bookidprovided = True
+            if book_id is None:
+                bookidprovided = False
+
+            return render_template("review.html", book_id = book_id, bookidprovided = bookidprovided)
 
 if __name__ == "__main__":
     app.run(debug=True)

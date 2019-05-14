@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block heading %}Add Review{% endblock %}
+
+{% block body %}
+  <form action="{{url_for('reviews')}}" method="post">
+    <input type="text" name="review" placeholder="Enter review">
+    {% if bookidprovided %}
+    <input type="text" name="bookid" value="{{book_id}}">
+    {% else %}
+    <input type="text" name="bookid" placeholder="Enter book id">
+    {% endif %}
+    <button>Submit</button>
+  </form>
+{% endblock %}
