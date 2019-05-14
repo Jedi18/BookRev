@@ -98,7 +98,9 @@ def books(isbn):
     if book is None:
         return render_template("book.html", found=False)
 
-    return render_template("book.html", found=True ,book=book)
+    reviews = db.execute("SELECT * FROM reviews WHERE book_id = :bookid LIMIT 10", {"bookid":book["id"]}).fetchall()
+
+    return render_template("book.html", found=True ,book=book, reviews=reviews)
 
 if __name__ == "__main__":
     app.run(debug=True)

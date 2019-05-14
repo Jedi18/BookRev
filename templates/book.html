@@ -10,10 +10,26 @@
 
 {% block body %}
   {% if found %}
+
   ISBN No. :- {{book["isbn"]}}<br>
   Title :- {{book["title"]}}<br>
   Author :- {{book["author"]}}<br>
   Year :- {{book["year"]}}<br>
+
+  <br>Reviews:-<br><br>
+
+  {% if reviews|length < 1 %}
+    No reviews for this book.
+  {% endif %}
+
+  {% for review in reviews %}
+
+  {{review["review"]}}
+  <br>
+  Posted on :- {{review["posted_on"]}}
+  <br><br>
+
+  {% endfor %}
   {% else %}
   Wrong ISBN number or book is not present in the database.
   {% endif %}
