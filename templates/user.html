@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block heading %}User :- {{user['username']}}{% endblock %}
+
+{% block body %}
+  Oh yes indeed, programs! Your liberator! Your luminary! Your leader and beacon!<br>
+  The one who vanquished the tyranny of the user those many cycles before! CLU!
+  <br><hr>
+  <h2>Reviews :-</h2>
+  {% for review in reviews %}
+    {{review['review']}}
+    <br>
+    Posted on :- {{review['posted_on']}}
+    <br><br>
+  {% endfor %}
+{% endblock %}

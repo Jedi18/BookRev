@@ -51,6 +51,9 @@ def login():
     if session.get("username") is None:
         session["logged_in"] = False
 
+    if session["logged_in"] == True:
+        return render_template("test.html", test="You need to log out first.")
+
     if request.method=="POST":
         #if already logged in, take the user to logout page
         if session["logged_in"] == True:
@@ -165,6 +168,16 @@ def api(isbn):
     response = jsonify({"title":book["title"], "author":book["author"], "year":book["year"], "isbn":book["isbn"], "review_count":review_count,"average_score":ratings})
     response.status_code = 200
     return response
+
+@app.route("/user")
+def user():
+    if not (session["logged_in"] == True):
+        return redirect(url_for("login"))
+
+    user = db.execute("SELECT * FROM users WHERE id = :id", {"id":session["user_id"]}).fetchone()
+    reviews = db.execute("SELECT * FROM reviews WHERE user_name = :username", {"username":user['username']}).fetchall()
+
+    return render_template("user.html", user=user, reviews=reviews)
 
 if __name__ == "__main__":
     app.run(debug=True)
