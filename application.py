@@ -179,5 +179,15 @@ def user():
 
     return render_template("user.html", user=user, reviews=reviews)
 
+@app.route("/author")
+def author():
+    name = request.args.get("name")
+
+    if name is None:
+        abort(404)
+
+    books = db.execute("SELECT * FROM books WHERE author = :name", {"name":name}).fetchall()
+    return render_template("author.html", books=books, author_name=name)
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -13,7 +13,7 @@
 
   ISBN No. :- {{book["isbn"]}}<br>
   Title :- {{book["title"]}}<br>
-  Author :- {{book["author"]}}<br>
+  Author :- <a href="{{url_for('author', name=book['author'])}}">{{book["author"]}}</a><br>
   Year :- {{book["year"]}}<br>
   <hr>
   <br>Goodreads Reviews<br><br>
