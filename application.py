@@ -83,14 +83,27 @@ def test():
 
 @app.route("/search", methods=["GET"])
 def search():
+    offset = request.args.get("page")
+    next_url = request.url
+
+    if offset is None:
+        offset = 0
+        next_url += '&page=1'
+    else:
+        offset = int(offset)
+        extra = "&page={}".format(offset+1)
+        next_url = next_url[:-7] + extra
+        # page number * 10, so as to get correct offset for that page
+        offset = int(offset) * 10
+
     isbn = request.args.get("isbn_query")
     isbn = "%{}%".format(isbn)
     title = request.args.get("title_query")
     title = "%{}%".format(title.title())
     author = request.args.get("author_query")
     author = "%{}%".format(author.title())
-    results = db.execute("SELECT * FROM books WHERE isbn LIKE :isbn AND title LIKE :title AND author LIKE :author LIMIT 10", {"isbn":isbn, "title":title, "author":author}).fetchall()
-    return render_template("search.html", results=results)
+    results = db.execute("SELECT * FROM books WHERE isbn LIKE :isbn AND title LIKE :title AND author LIKE :author ORDER BY id LIMIT 10 OFFSET :offset", {"isbn":isbn, "title":title, "author":author, "offset":offset}).fetchall()
+    return render_template("search.html", results=results,next_url=next_url)
 
 @app.route("/books/<string:isbn>")
 def books(isbn):

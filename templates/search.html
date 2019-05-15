@@ -8,4 +8,7 @@
     <a href="{{url_for('books', isbn=result['isbn'])}}" class="list-group-item list-group-item-action">{{result["isbn"]}} : {{result["title"]}} - {{result["author"]}}</a>
   {% endfor %}
   </div>
+  {% if results|length >= 10 %}
+  <a href="{{next_url}}" class="btn btn-secondary">Next page</a>
+  {% endif %}
 {% endblock %}
