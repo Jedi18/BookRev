@@ -115,6 +115,10 @@ def books(isbn):
     if book is None:
         return render_template("book.html", found=False)
 
+    # update book visit counter
+    db.execute("UPDATE books SET visit_counter = :counter WHERE isbn = :isbn", {"counter":book["visit_counter"]+1, "isbn":isbn})
+    db.commit()
+
     reviews = db.execute("SELECT * FROM reviews WHERE book_id = :bookid LIMIT 10", {"bookid":book["id"]}).fetchall()
 
     #Good reads review data
@@ -188,6 +192,14 @@ def author():
 
     books = db.execute("SELECT * FROM books WHERE author = :name", {"name":name}).fetchall()
     return render_template("author.html", books=books, author_name=name)
+
+@app.route("/mostvisited/<string:type>")
+def mostvisited(type):
+    if type=='BOOK':
+        books = db.execute("SELECT * FROM books ORDER BY visit_counter DESC LIMIT 5").fetchall()
+        return render_template("mostvisited.html", type=type, books=books)
+    else:
+        abort(400)
 
 if __name__ == "__main__":
     app.run(debug=True)

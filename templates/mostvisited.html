@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block heading %}Most visited
+{% if type == "BOOK"%}
+books :-
+{% endif %}
+{% endblock %}
+
+{% block body %}
+  <div class="list-group">
+  {% for book in books %}
+    <a href="{{url_for('books', isbn=book['isbn'])}}" class="list-group-item list-group-item-action">{{book["isbn"]}} : {{book["title"]}} - {{book["author"]}} VISITS - {{book["visit_counter"]}}</a>
+  {% endfor %}
+  </div>
+{% endblock %}
