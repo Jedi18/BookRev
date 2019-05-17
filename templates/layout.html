@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BooksP</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap/jquery-3.4.1.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/js1.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap/bootstrap.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap/bootstrap.css')}}">
@@ -64,7 +64,7 @@
   </nav>
   <!-- WEBSITE HEADER END         ____________________________ -->
     <div class="container">
-      <h1>{% block heading %}{% endblock %}</h1>
+      <div class="row mt-3 ml-2 mb-3"><h1>{% block heading %}{% endblock %}</h1></div>
 
       {% block body %}
       {% endblock %}
