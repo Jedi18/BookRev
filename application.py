@@ -77,7 +77,7 @@ def login():
 @app.route("/logout", methods=["GET"])
 def logout():
     session["logged_in"] = False
-    return "Logged out! :)"
+    return redirect(url_for("index"))
 
 @app.route("/test")
 def test():
