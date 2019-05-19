@@ -205,5 +205,13 @@ def mostvisited(type):
 def home():
     return render_template("home.html")
 
+@app.route("/userdescription", methods=["POST"])
+def userdescription():
+    description = request.form.get('description')
+    
+    db.execute("UPDATE users SET description = :desc WHERE id = :id", {"desc":description, "id":session["user_id"]})
+    db.commit()
+    return jsonify({"success":True, "description":description})
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -7,16 +7,19 @@
 {% block heading %}User :- {{user['username']}}{% endblock %}
 
 {% block body %}
-  {{user['description']}}
+  <div id="display_user_description">
+    {{user['description']}}
+  </div>
   <br>
 
   <div class="mx-auto" style="width: 200px;">
     <button class="btn btn-secondary"id="descrip">Change Description</button>
   </div>
 
-  <div id="description_form">
-    <form class="form-group">
-    <textarea name="description" rows="8" cols="80" class="form-control"></textarea>
+  <div id="description_form" class="mt-3">
+    <form class="form-group" id="desc_form">
+    <textarea id="user_description" name="description" rows="8" cols="80" class="form-control"></textarea>
+    <button class="form-control">Submit</button>
     </form>
   </div>
 
