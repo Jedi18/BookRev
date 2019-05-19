@@ -65,12 +65,12 @@ def login():
         #do stuff
         user = db.execute("SELECT * FROM users WHERE username=:user AND pass=:passw", {"user":user_name, "passw" : password}).fetchone()
         if user is None:
-            return render_template("register_result.html", result=False)
+            return redirect(url_for('register'))
         else:
             session["logged_in"] = True
             session["username"] = user_name
             session["user_id"] = user["id"]
-            return render_template("register_result.html", result=True)
+            return redirect(url_for('index'))
     else:
         return render_template("login.html")
 
@@ -200,6 +200,10 @@ def mostvisited(type):
         return render_template("mostvisited.html", type=type, books=books)
     else:
         abort(400)
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

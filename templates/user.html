@@ -1,11 +1,27 @@
 {% extends "layout.html" %}
 
+{% block jsscripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/user.js')}}"></script>
+{% endblock %}
+
 {% block heading %}User :- {{user['username']}}{% endblock %}
 
 {% block body %}
-  Oh yes indeed, programs! Your liberator! Your luminary! Your leader and beacon!<br>
-  The one who vanquished the tyranny of the user those many cycles before! CLU!
-  <br><hr>
+  {{user['description']}}
+  <br>
+
+  <div class="mx-auto" style="width: 200px;">
+    <button class="btn btn-secondary"id="descrip">Change Description</button>
+  </div>
+
+  <div id="description_form">
+    <form class="form-group">
+    <textarea name="description" rows="8" cols="80" class="form-control"></textarea>
+    </form>
+  </div>
+
+  <hr>
+
   <h2>Reviews :-</h2>
   {% for review in reviews %}
     {{review['review']}}

@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block jsscripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/reviews.js')}}"></script>
+{% endblock %}
+
 {% block heading %}Add Review{% endblock %}
 
 {% block body %}
