@@ -173,6 +173,32 @@ def api(isbn):
     response.status_code = 200
     return response
 
+@app.route("/apiid/<int:id>", methods=["GET"])
+def apiid(id):
+    book = db.execute("SELECT * FROM books WHERE id = :id",{"id":id}).fetchone()
+
+    if book is None:
+        response = jsonify({"message":"text not found","success":False})
+        response.status_code = 404
+        return response
+
+    reviews = db.execute("SELECT rating FROM reviews WHERE book_id = :bookid",{"bookid":book["id"]}).fetchall()
+
+    review_count = len(reviews)
+    ratings = 0
+
+    for review in reviews:
+        ratings += review["rating"]
+
+    ratings = ratings//review_count
+
+    if book is None:
+        abort(404)
+
+    response = jsonify({"title":book["title"], "author":book["author"], "year":book["year"], "isbn":book["isbn"], "review_count":review_count,"average_score":ratings,"success":True})
+    response.status_code = 200
+    return response
+
 @app.route("/user")
 def user():
     if not (session["logged_in"] == True):
@@ -208,7 +234,7 @@ def home():
 @app.route("/userdescription", methods=["POST"])
 def userdescription():
     description = request.form.get('description')
-    
+
     db.execute("UPDATE users SET description = :desc WHERE id = :id", {"desc":description, "id":session["user_id"]})
     db.commit()
     return jsonify({"success":True, "description":description})

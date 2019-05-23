@@ -13,13 +13,14 @@
     </div>
     {% if bookidprovided %}
     <div class="form-group">
-      <input type="text" name="bookid" value="{{book_id}}" class="form-control">
+      <input type="text" name="bookid" value="{{book_id}}" class="form-control" id="bookid">
     </div>
     {% else %}
     <div class="form-group">
-      <input type="text" name="bookid" placeholder="Enter book id" class="form-control">
+      <input type="text" name="bookid" placeholder="Enter book id" class="form-control" id="bookid">
     </div>
     {% endif %}
+    <div id="bookinfo"></div>
     <div class="form-group">
       <input type="range" min="1" max="5" value="3" name="rating" onchange="updateRatingSlider(this.value);" class="form-control">
       <input type="text" value="" id="ratingsValue" class="form-control">
