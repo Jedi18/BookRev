@@ -3,14 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
   var typingTimer;
   var timerInterval = 2500;
 
+  setTimeout(getBookInfo, 1000);
+
   document.querySelector("#bookid").addEventListener('keyup', () => {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(getBookInfo,timerInterval);
   });
 
   function getBookInfo(){
-    const request = new XMLHttpRequest();
     const book_id  = document.querySelector("#bookid").value;
+    const request = new XMLHttpRequest();
+
+    if(book_id == "")
+    {
+      return;
+    }
 
     request.open('GET', `/apiid/${book_id}`);
 

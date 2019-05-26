@@ -179,8 +179,10 @@ def apiid(id):
 
     if book is None:
         response = jsonify({"message":"text not found","success":False})
-        response.status_code = 404
+        response.status_code = 200
         return response
+
+    print(book)
 
     reviews = db.execute("SELECT rating FROM reviews WHERE book_id = :bookid",{"bookid":book["id"]}).fetchall()
 
@@ -190,10 +192,8 @@ def apiid(id):
     for review in reviews:
         ratings += review["rating"]
 
-    ratings = ratings//review_count
-
-    if book is None:
-        abort(404)
+    if review_count != 0:
+        ratings = ratings//review_count
 
     response = jsonify({"title":book["title"], "author":book["author"], "year":book["year"], "isbn":book["isbn"], "review_count":review_count,"average_score":ratings,"success":True})
     response.status_code = 200
